@@ -73,7 +73,7 @@ export default function HelpSupportChat({ userId }) {
   };
 
   return (
-    <div className="flex flex-col h-auto w-[100%]  mx-auto border rounded-lg shadow bg-gradient-to-br from-gray-900 to-green-900">
+    <div className="flex flex-col h-auto w-[100%]  mx-auto border  shadow bg-gradient-to-br from-gray-900 to-green-900">
       {/* <div className="flex flex-col h-full w-full border rounded-lg shadow-lg bg-white"> */}
       {/* Header */}
       {/* <div className="p-4 bg-green-600 text-white font-semibold rounded-t-lg">Help & Support</div> */}
@@ -93,6 +93,7 @@ export default function HelpSupportChat({ userId }) {
               <div>{msg.content}</div>
               {msg.senderId === userId && (
                 <div className="text-[10px] mt-1 text-right text-gray-200">
+                  {console.log(msg.seen)}
                   {msg.seen ? 'Seen' : 'Sent'}
                 </div>
               )}
