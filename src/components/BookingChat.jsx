@@ -1,80 +1,114 @@
 // frontend/components/BookingChat.jsx
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { io } from 'socket.io-client';
+import API from '../api/axios';
 
-const socket = io('http://localhost:5000');
+const socket = io('http://localhost:5000', { autoConnect: false });
 
-export default function BookingChat({ propertyId, userId, ownerId }) {
+export default function BookingChat({ userId, propertyId, ownerId, tenantId }) {
   const [conversationId, setConversationId] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const bottomRef = useRef(null);
 
-  // 1. Create or get booking chat
+  // 1. Init booking chat
   useEffect(() => {
-    fetch('/api/chat/booking', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ propertyId, ownerId }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setConversationId(data.data.conversation._id);
+    const initChat = async () => {
+      try {
+        const { data } = await API.post('/v1/chats/booking', {
+          propertyId,
+          tenantId,
+          ownerId,
+        });
 
-        socket.emit('joinRoom', data.data.conversation._id);
+        setConversationId(data.conversation._id);
+        setMessages(data.messages);
 
-        fetch(`/api/chat/messages/${data.data.conversation._id}`)
-          .then((res) => res.json())
-          .then((m) => setMessages(m.data.messages));
-      });
-  }, [propertyId, ownerId]);
-
-  // 2. Listen for messages
-  useEffect(() => {
-    socket.on('messageReceived', (message) => {
-      if (message.conversationId === conversationId) {
-        setMessages((prev) => [...prev, message]);
+        socket.connect();
+        socket.emit('joinRoom', data.conversation._id);
+      } catch (err) {
+        console.error('❌ Error init booking chat:', err.response?.data || err.message);
       }
-    });
+    };
 
-    return () => socket.off('messageReceived');
+    initChat();
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [propertyId, tenantId, ownerId]);
+
+  // 2. Listen for socket messages
+  useEffect(() => {
+    const handleMessage = (msg) => {
+      if (msg.conversationId === conversationId) {
+        setMessages((prev) => [...prev, msg]);
+      }
+    };
+
+    socket.on('messageReceived', handleMessage);
+    return () => socket.off('messageReceived', handleMessage);
   }, [conversationId]);
 
-  // 3. Send message
+  // 3. Auto-scroll
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  // 4. Send message
   const sendMessage = async () => {
-    if (!newMessage.trim()) return;
+    if (!newMessage.trim() || !conversationId) return;
 
-    await fetch('/api/chat/message', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    try {
+      await API.post('/v1/chats/message', {
         conversationId,
-        receiverId: ownerId, // or tenantId depending on user role
         content: newMessage,
-      }),
-    });
-
-    setNewMessage('');
+      });
+      setNewMessage('');
+    } catch (err) {
+      console.error('❌ Error sending message:', err.response?.data || err.message);
+    }
   };
 
   return (
-    <div className="chat-container">
-      <h2>Booking Chat</h2>
-      <div className="chat-box">
-        {messages.map((msg, i) => (
-          <div key={i} className={msg.senderId === userId ? 'my-msg' : 'their-msg'}>
-            {msg.content}
-          </div>
-        ))}
+    <div className="flex flex-col h-[80vh] w-full border rounded-lg shadow bg-white">
+      <div className="p-3 bg-green-600 text-white font-semibold rounded-t-lg">Booking Chat</div>
+
+      <div className="flex-1 p-4 overflow-y-auto bg-gray-50">
+        {messages.length > 0 ? (
+          messages.map((msg, i) => (
+            <div
+              key={msg._id || i}
+              className={`max-w-[70%] mb-2 p-2 rounded-lg text-sm shadow ${
+                msg.senderId === userId
+                  ? 'ml-auto bg-green-500 text-white rounded-br-none'
+                  : 'mr-auto bg-gray-200 text-gray-900 rounded-bl-none'
+              }`}
+            >
+              {msg.content}
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-500 text-center">No messages yet. Start the conversation!</p>
+        )}
+        <div ref={bottomRef} />
       </div>
 
-      <div className="chat-input">
+      <div className="p-3 border-t flex items-center bg-white">
         <input
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Type your message..."
+          placeholder="Type a message..."
+          className="flex-1 px-3 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-green-400"
+          onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
         />
-        <button onClick={sendMessage}>Send</button>
+        <button
+          onClick={sendMessage}
+          className="ml-2 px-4 py-2 bg-green-600 text-white rounded-full hover:bg-green-700"
+        >
+          Send
+        </button>
       </div>
     </div>
   );

@@ -115,8 +115,8 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
-          <Route path="/property/:id" element={<PropertyDetails />} />
           <Route element={<PrivateRoute />}>
+            <Route path="/property/:id" element={<PropertyDetails />} />
             <Route path="/owner-dashboard" element={<OwnerDashboard />} />
             <Route path="/owner-dashboard/requests" element={<RequestsSection />} />
             <Route path="/owner-payment-history" element={<OwnerPaymentHistory />} />

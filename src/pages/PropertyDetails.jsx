@@ -4,11 +4,6 @@ import API from '../api/axios';
 // import ReviewSection from '../pages/ReviewSection';
 import { toast } from 'react-toastify';
 import { FaStar } from 'react-icons/fa';
-import Slider from 'react-slick';
-import Lightbox from 'react-image-lightbox';
-import 'react-image-lightbox/style.css';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import { useContext } from 'react';
 import { AuthContext } from '../context/authContext';
 import { useLoading } from '../context/LoadingContext';
@@ -24,6 +19,16 @@ import {
   Bath,
   Check,
 } from 'lucide-react';
+
+import Slider from 'react-slick';
+import Lightbox from 'yet-another-react-lightbox';
+import 'yet-another-react-lightbox/styles.css';
+
+import Captions from 'yet-another-react-lightbox/plugins/captions';
+import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails';
+import Zoom from 'yet-another-react-lightbox/plugins/zoom';
+
+import 'yet-another-react-lightbox/plugins/thumbnails.css';
 
 const capitalize = (str) => str && str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
@@ -142,82 +147,6 @@ const PropertyDetails = () => {
 
     fetchData();
   }, [id]);
-
-  // useEffect(() => {
-  //   const storedUser = localStorage.getItem('user');
-  //   if (storedUser) {
-  //     const parsedUser = JSON.parse(storedUser);
-  //     setUser(parsedUser);
-
-  //     const fetchData = async () => {
-  //       try {
-  //         setIsLoading(true);
-  //         const res = await API.get(`/v1/properties/${id}`);
-  //         const propertyData = res.data.data.data;
-
-  //         // Capitalize fields
-  //         propertyData.city = capitalize(propertyData.city);
-  //         propertyData.region = capitalize(propertyData.region);
-  //         propertyData.propertyType = capitalize(propertyData.propertyType);
-  //         propertyData.availabilityStatus = capitalize(propertyData.availabilityStatus);
-  //         propertyData.amenities = propertyData.amenities?.map(capitalize);
-
-  //         setProperty(propertyData);
-
-  //         if (parsedUser.role === 'tenant') {
-  //           const bookingRes = await API.get(`/v1/bookings/myBooking/${id}`);
-  //           const booking = bookingRes.data.data;
-
-  //           if (booking) {
-  //             setHasAlreadyBooked(true);
-  //             setBookingStatus(booking.status);
-
-  //             if (booking.status === 'approved') {
-  //               setOwnerInfo({
-  //                 name: `${capitalize(booking.ownerName?.split(' ')[0])} ${capitalize(
-  //                   booking.ownerName?.split(' ')[1] || ''
-  //                 )}`,
-  //                 email: booking.ownerEmail,
-  //                 phone: booking.ownerPhone,
-  //               });
-  //             }
-  //           }
-  //         }
-  //       } catch (err) {
-  //         console.error(err);
-  //         toast.error('Failed to load property details or booking info.');
-  //       } finally {
-  //         setIsLoading(false);
-  //       }
-  //     };
-
-  //     fetchData();
-  //   } else {
-  //     const fetchProperty = async () => {
-  //       try {
-  //         setIsLoading(true);
-  //         const res = await API.get(`/v1/properties/${id}`);
-  //         const propertyData = res.data.data.data;
-
-  //         // Capitalize fields
-  //         propertyData.city = capitalize(propertyData.city);
-  //         propertyData.region = capitalize(propertyData.region);
-  //         propertyData.propertyType = capitalize(propertyData.propertyType);
-  //         propertyData.availabilityStatus = capitalize(propertyData.availabilityStatus);
-  //         propertyData.amenities = propertyData.amenities?.map(capitalize);
-
-  //         setProperty(propertyData);
-  //         toast.success('Sucessfully loaded property details.');
-  //       } catch (err) {
-  //         toast.error('Failed to load property details.');
-  //       } finally {
-  //         setIsLoading(false);
-  //       }
-  //     };
-
-  //     fetchProperty();
-  //   }
-  // }, [id]);
 
   const handleFormChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -483,7 +412,7 @@ const PropertyDetails = () => {
                   <div
                     className="border border-green-600 rounded-md overflow-hidden cursor-pointer pb-4"
                     onClick={() => {
-                      setLightboxIndex(0);
+                      setLightboxIndex(idx);
                       setIsLightboxOpen(true);
                     }}
                   >
@@ -532,20 +461,19 @@ const PropertyDetails = () => {
         )}
 
         {/* Lightbox */}
-        {isLightboxOpen && (
+        {isLightboxOpen && property?.images?.length > 0 && (
           <Lightbox
-            mainSrc={property.images[lightboxIndex]}
-            nextSrc={property.images[(lightboxIndex + 1) % property.images.length]}
-            prevSrc={
-              property.images[(lightboxIndex + property.images.length - 1) % property.images.length]
-            }
-            onCloseRequest={() => setIsLightboxOpen(false)}
-            onMovePrevRequest={() =>
-              setLightboxIndex(
-                (lightboxIndex + property.images.length - 1) % property.images.length
-              )
-            }
-            onMoveNextRequest={() => setLightboxIndex((lightboxIndex + 1) % property.images.length)}
+            open={isLightboxOpen}
+            close={() => setIsLightboxOpen(false)}
+            index={lightboxIndex}
+            slides={property.images.map((img) => ({ src: img }))}
+            plugins={[Captions, Thumbnails, Zoom]}
+            captions={{
+              descriptionTextAlign: 'center',
+            }}
+            thumbnails={{
+              position: 'bottom',
+            }}
           />
         )}
 

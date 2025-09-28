@@ -20,6 +20,7 @@ import OwnerDashboard from './OwnerDashboard';
 import TenantDashboard from './TenantDashboard';
 import Footer from '../components/Footer';
 import OwnerPaymentHistory from './OwnerPaymentHistory';
+import TenantPaymentHistory from './TenantPaymentHistory';
 import MyBookings from './MyBookings';
 import RequestsSection from '../components/RequestsSection';
 import Logout from '../components/Logout';
@@ -30,7 +31,7 @@ const ownerItems = [
   { id: 'payments', label: 'Payments', icon: <Receipt size={20} /> },
   { id: 'requests', label: 'Requests', icon: <Inbox size={20} /> },
   { id: 'profile', label: 'Profile', icon: <User size={20} /> },
-  { id: 'chats', label: 'Chats', icon: <MessageCircle size={20} /> },
+  { id: 'chats', label: 'Support Chat', icon: <MessageCircle size={20} /> },
 ];
 
 const tenantItems = [
@@ -38,7 +39,7 @@ const tenantItems = [
   { id: 'bookings', label: 'Bookings', icon: <Inbox size={20} /> },
   { id: 'payments', label: 'Payments', icon: <Receipt size={20} /> },
   { id: 'profile', label: 'Profile', icon: <User size={20} /> },
-  { id: 'chats', label: 'Chats', icon: <MessageCircle size={20} /> },
+  // { id: 'chats', label: 'Chats', icon: <MessageCircle size={20} /> },
 ];
 
 export default function SettingsPage() {
@@ -82,7 +83,7 @@ export default function SettingsPage() {
       case 'payments':
         return (
           <div className="px-1">
-            <OwnerPaymentHistory />
+            {user?.role === 'owner' ? <OwnerPaymentHistory /> : <TenantPaymentHistory />}
           </div>
         );
 
@@ -103,7 +104,7 @@ export default function SettingsPage() {
       case 'dashboard':
         return (
           <div className="px-1">
-            {user?.role === 'owner' ? <OwnerDashboard /> : <TenantDashboard />}
+            {/* {user?.role === 'owner' ? <OwnerDashboard /> : <TenantDashboard />} */}
           </div>
         );
 
