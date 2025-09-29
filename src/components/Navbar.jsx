@@ -113,7 +113,10 @@ const Navbar = () => {
               <div className="w-8 h-8 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center text-white text-sm font-semibold">
                 {user.firstName ? user.firstName[0].toUpperCase() : user.email[0].toUpperCase()}
               </div>
-              <span className="text-charcoal font-medium">{user.firstName || user.email}</span>
+              <span className="text-charcoal font-medium">
+                {' '}
+                {user?.firstName + ' ' + user?.lastName || user.email}
+              </span>
             </div>
           )}
 
@@ -184,7 +187,10 @@ const Navbar = () => {
               <div className="w-8 h-8 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center text-white text-sm font-semibold">
                 {user.firstName ? user.firstName[0].toUpperCase() : user.email[0].toUpperCase()}
               </div>
-              <span className="text-charcoal font-medium">{user.firstName || user.email}</span>
+              <span className="text-charcoal font-medium">
+                {' '}
+                {user?.firstName + ' ' + user?.lastName || user.email}
+              </span>
             </div>
           )}
 

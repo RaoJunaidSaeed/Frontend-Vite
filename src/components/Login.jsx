@@ -26,13 +26,19 @@ const Login = () => {
     try {
       const res = await API.post('/v1/auth/login', form, { withCredentials: true });
 
-      if (res.data.status === 'success') {
+      const role = res.data.data.user.role;
+
+      if (res.data.status === 'success' && role !== 'admin') {
         toast.success('Login successful!');
         const user = res.data.data.user;
+        const token = res.data.token;
 
-        login(user);
-        localStorage.setItem('user', JSON.stringify(user));
-        localStorage.setItem('token', res.data.token); // ⬅️ important for PrivateRoute
+        if (user.role === 'admin') {
+          toast.error('You are not allowed.');
+          return;
+        }
+
+        login(user, token);
 
         // ✅ Redirect
         if (from && from !== '/login') {
@@ -44,7 +50,7 @@ const Login = () => {
           } else if (user.role === 'tenant') {
             navigate('/tenant-dashboard', { replace: true });
           } else {
-            navigate('/dashboard', { replace: true });
+            navigate('/login', { replace: true });
           }
         }
       }

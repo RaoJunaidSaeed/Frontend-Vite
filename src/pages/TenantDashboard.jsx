@@ -58,29 +58,6 @@ const TenantDashboard = () => {
     });
   };
 
-  // const fetchAllProperties = async () => {
-  //   try {
-  //     setIsLoading(true);
-  //     const res = await API.get('/v1/properties');
-
-  //     const raw = res.data?.data?.data || [];
-
-  //     const safe = raw.map((p) => ({
-  //       ...p,
-  //       images: Array.isArray(p.images) ? p.images : [],
-  //       amenities: Array.isArray(p.amenities) ? p.amenities : [],
-  //     }));
-
-  //     setAllProperties(safe);
-  //     setFilteredProperties(safe);
-  //   } catch (err) {
-  //     toast.error('Failed to fetch properties.');
-  //     console.error(err);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
   const fetchAllProperties = async () => {
     try {
       setIsLoading(true);
@@ -128,7 +105,7 @@ const TenantDashboard = () => {
             {/* Header */}
             <div className="text-center space-y-3 pt-12 pb-8">
               <h1 className="text-3xl font-extrabold text-white tracking-tight">
-                Welcome, {user?.firstName || 'User'}
+                Welcome, {user?.firstName + ' ' + user?.lastName || 'User'}
               </h1>
               <p className="text-green-300 text-lg">
                 Browse and book verified rental properties easily.
@@ -139,25 +116,11 @@ const TenantDashboard = () => {
             <section className="bg-[rgba(63,73,63,0.05)] backdrop-blur-md ring-1 ring-white/15 rounded-2xl p-6 sm:p-8 space-y-6">
               <h2 className="text-2xl font-semibold text-green-200">Filter Properties</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {/* <select
-                name="city"
-                value={filters.city}
-                onChange={handleInputChange}
-                className="bg-white/10 text-green-600 border border-white/20 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#2A5942]
-"
-              >
-                <option value="">Select City</option>
-                {cities.map((city, idx) => (
-                  <option key={idx} value={city}>
-                    {city}
-                  </option>
-                ))}
-              </select> */}
                 <select
                   name="city"
                   value={filters.city}
                   onChange={handleInputChange}
-                  className="w-full max-w-sm bg-white/10 text-green-600 border border-white/20 rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#2A5942] appearance-none"
+                  className=" bg-white/10 text-green-600 border border-white/20 rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#2A5942] appearance-none"
                 >
                   <option value="">Select City</option>
                   {cities.map((city, idx) => (
@@ -171,7 +134,7 @@ const TenantDashboard = () => {
                   name="region"
                   value={filters.region}
                   onChange={handleInputChange}
-                  className="w-full max-w-sm bg-white/10 text-green-600 border border-white/20 rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#2A5942] appearance-none"
+                  className=" bg-white/10 text-green-600 border border-white/20 rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#2A5942] appearance-none"
                 >
                   <option value="">Select Region</option>
                   {regions.map((region, idx) => (
@@ -185,7 +148,7 @@ const TenantDashboard = () => {
                   name="type"
                   value={filters.type}
                   onChange={handleInputChange}
-                  className="w-full max-w-sm bg-white/10 text-green-600 border border-white/20 rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#2A5942] appearance-none"
+                  className=" bg-white/10 text-green-600 border border-white/20 rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#2A5942] appearance-none"
                 >
                   <option value="">Select Type</option>
                   {types.map((type, idx) => (
