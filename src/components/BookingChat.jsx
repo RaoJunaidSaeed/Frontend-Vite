@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 import { io } from 'socket.io-client';
 import API from '../api/axios';
 
-const socket = io('http://localhost:5000', { autoConnect: false });
+const socket = io('https://rentofix-backend-live-api.onrender.com', { autoConnect: false });
 
 export default function BookingChat({ userId, propertyId, ownerId, tenantId }) {
   const [conversationId, setConversationId] = useState(null);

@@ -4,7 +4,7 @@ import { io } from 'socket.io-client';
 import API from '../api/axios';
 
 // ⚡ Socket connection (reuse same instance)
-const socket = io('http://localhost:5000', { autoConnect: false });
+const socket = io('https://rentofix-backend-live-api.onrender.com', { autoConnect: false });
 
 export default function HelpSupportChat({ userId }) {
   const [conversationId, setConversationId] = useState(null);

@@ -142,7 +142,7 @@ function CheckoutForm({ plan }) {
       <button
         type="submit"
         disabled={!stripe || isProcessing}
-        className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-green-400 disabled:opacity-50"
+        className="w-full bg-gradient-to-r from-primary to-secondary hover:bg-green-600 text-white font-semibold py-3 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-green-400 disabled:opacity-50"
       >
         {isProcessing ? 'Processing...' : `Pay Rs ${plan.price}`}
       </button>

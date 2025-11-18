@@ -14,16 +14,16 @@
 // 2. src/api/axios.js
 import axios from 'axios';
 
-let baseURL;
+let baseURL = 'http://localhost:5000/api';
 
-// Use localhost for PC dev
-if (window.location.hostname === 'localhost') {
-  baseURL = 'http://localhost:5000/api';
-  // console.log(baseURL);
-} else {
-  // Use the IP address for mobile or other devices on LAN
-  baseURL = `http://192.168.100.59:5000/api`;
-}
+// // Use localhost for PC dev
+// if (window.location.hostname === 'localhost') {
+//   baseURL = 'http://localhost:5000/api';
+//   // console.log(baseURL);
+// } else {
+//   // Use the IP address for mobile or other devices on LAN
+//   baseURL = `http://192.168.100.59:5000/api`;
+// }
 
 const API = axios.create({
   baseURL,

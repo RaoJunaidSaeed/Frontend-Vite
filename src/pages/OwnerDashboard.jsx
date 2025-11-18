@@ -102,7 +102,7 @@ const OwnerDashboard = () => {
                       </div>
                       <button
                         onClick={() => handleSelectPlan(plan._id)}
-                        className="mt-6 w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-50"
+                        className="mt-6 w-full bg-gradient-to-r from-primary to-secondary hover:bg-green-600 text-white font-semibold py-3 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-50"
                       >
                         Select Plan
                       </button>
