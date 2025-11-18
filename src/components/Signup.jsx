@@ -98,7 +98,7 @@ const Signup = () => {
       <div className="relative z-10 w-full max-w-6xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* LEFT SECTION */}
-          <div className="hidden lg:flex flex-col justify-center text-white  px-10 space-y-8 lg:pr-8">
+          <div className="flex flex-col justify-center text-white  px-10 space-y-8 lg:pr-8">
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-6 h-6 text-green-400" />
@@ -184,7 +184,7 @@ const Signup = () => {
                           <input
                             type="text"
                             name={field}
-                            placeholder={field === 'firstName' ? 'John' : 'Doe'}
+                            placeholder={field === 'firstName' ? 'firstName' : 'lastName'}
                             value={form[field]}
                             onChange={handleChange}
                             required
@@ -224,7 +224,7 @@ const Signup = () => {
                       <input
                         type="tel"
                         name="phoneNumber"
-                        placeholder="+92 300 1234567"
+                        placeholder="+92 ... ......."
                         value={form.phoneNumber}
                         onChange={handleChange}
                         required
