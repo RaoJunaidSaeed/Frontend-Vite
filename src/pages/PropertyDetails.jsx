@@ -387,7 +387,7 @@ const PropertyDetails = () => {
                   <p className="text-blue-400 font-medium">👀 Only tenants can request bookings.</p>
                 ) : hasAlreadyBooked ? (
                   <div className="text-green-300 font-semibold space-y-2">
-                    <p>✅ You have already requested a booking for this property.</p>
+                    <p>✅ This property is already in a booking phase.</p>
                   </div>
                 ) : (
                   <button
