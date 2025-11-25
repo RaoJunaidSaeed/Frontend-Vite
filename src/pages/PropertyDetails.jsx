@@ -796,10 +796,20 @@ const ReviewSection = ({ property, setProperty }) => {
       });
 
       toast.success('Review submitted!');
+      // const newReview = res.data.data.review || {
+      //   review: reviewData.review,
+      //   rating: reviewData.rating,
+      //   tenantName: `${user.firstName} ${user.lastName}`,
+      // };
+
       const newReview = res.data.data.review || {
         review: reviewData.review,
         rating: reviewData.rating,
-        tenantName: `${user.firstName} ${user.lastName}`,
+        tenantId: {
+          _id: user._id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+        },
       };
 
       setProperty((prev) => ({

@@ -13,7 +13,7 @@ import {
   Star,
   CheckCircle,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import API from '../api/axios'; // your axios instance
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper/modules';
@@ -21,6 +21,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import FramerMotion from '../components/framerMotion';
+import { AuthContext } from '../context/authContext';
 
 const features = [
   {
@@ -88,7 +89,8 @@ const steps = [
 ];
 
 const LandingPage = () => {
-  const role = localStorage.getItem('role');
+  const { user } = useContext(AuthContext);
+  // const role = localStorage.getItem('role');
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
@@ -135,7 +137,8 @@ const LandingPage = () => {
                     Get Started
                   </button>
                 </Link>
-                <Link to="/properties">
+                {console.log('Role in landing page:', user?.role)}
+                <Link to={user?.role == 'tenant' ? '/tenant-dashboard' : '/owner-dashboard'}>
                   <button className="border-2 border-white text-white py-3 px-8 rounded-lg hover:bg-white/10 transition">
                     Browse Properties
                   </button>
@@ -176,7 +179,7 @@ const LandingPage = () => {
                   variant="elevated"
                   className="group hover:shadow-xl transition-transform duration-300 hover:-translate-y-1"
                 >
-                  <CardContent className="flex flex-col md:flex-row gap-8 items-center">
+                  <CardContent className="flex flex-col md:flex-row gap-8 pt-8 items-center">
                     <div className="relative">
                       <div className="w-32 h-32 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-3xl flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
                         <img src={image} alt={title} className="w-20 h-20 object-contain" />
@@ -219,22 +222,22 @@ const LandingPage = () => {
                     className="group hover-lift relative overflow-hidden"
                   >
                     <CardHeader>
-                      <div className="flex items-center gap-4 mb-4">
+                      <div className="flex items-center justify-start pl-8  gap-6 mb-2">
                         <div className="w-14 h-14 bg-gradient-to-r from-primary to-secondary rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                           <Icon className="w-7 h-7 text-white" />
                         </div>
-                        <div className="w-8 h-8 bg-butter rounded-full flex items-center justify-center font-heading font-bold text-charcoal">
+                        {/* <div className="w-8 h-8 bg-butter rounded-full flex items-center justify-center font-heading font-bold text-charcoal">
                           {idx + 1}
-                        </div>
+                        </div> */}
+                        <CardTitle className="text-lg group-hover:text-primary transition-colors duration-200">
+                          {title}
+                        </CardTitle>
                       </div>
-                      <CardTitle className="text-lg group-hover:text-primary transition-colors duration-200">
-                        {title}
-                      </CardTitle>
                     </CardHeader>
                     <CardContent>
                       <CardDescription className="leading-relaxed">{desc}</CardDescription>
                     </CardContent>
-                    <div className="absolute -bottom-4 -right-4 w-16 h-16 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-full opacity-50 group-hover:opacity-100 transition-opacity duration-300" />
+                    {/* <div className="absolute -bottom-4 -right-4 w-16 h-16 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-full opacity-50 group-hover:opacity-100 transition-opacity duration-300" /> */}
                   </Card>
                 ))}
               </div>

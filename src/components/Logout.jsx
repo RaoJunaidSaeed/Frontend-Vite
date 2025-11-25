@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { AuthContext } from '../context/authContext';
 import { LogOut } from 'lucide-react';
+import { Navigate } from 'react-router-dom';
 
 export default function Logout() {
   const { user, logout } = useContext(AuthContext);
@@ -8,7 +9,7 @@ export default function Logout() {
   const handleLogout = () => {
     logout();
     document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-    navigate('/login');
+    Navigate('/login');
   };
 
   return (

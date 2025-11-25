@@ -13,7 +13,7 @@ const Card = ({ children, className = '', variant = 'default' }) => {
 };
 
 const CardContent = ({ children, className = '' }) => (
-  <div className={`p-6 ${className}`}>{children}</div>
+  <div className={` px-10 pb-8 text-center ${className}`}>{children}</div>
 );
 
 const CardHeader = ({ children, className = '' }) => (
