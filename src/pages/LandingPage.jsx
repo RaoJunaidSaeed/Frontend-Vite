@@ -26,8 +26,8 @@ import { AuthContext } from '../context/authContext';
 const features = [
   {
     icon: Shield,
-    title: 'Verified Users & Secure OTP',
-    desc: 'Signup includes OTP verification to ensure trust for both tenants and owners.',
+    title: 'Verified Users',
+    desc: 'Signup includes verification to ensure trust for both tenants and owners.',
     image: '/images/secure.svg',
   },
   {
@@ -53,8 +53,8 @@ const features = [
 const steps = [
   {
     icon: Users,
-    title: 'Signup & Verify OTP',
-    desc: 'Register and confirm your identity via email OTP.',
+    title: 'Signup',
+    desc: 'Register and confirm your identity.',
   },
   {
     icon: Shield,
